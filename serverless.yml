@@ -1,0 +1,36 @@
+service: lambda-store-slack-bot
+frameworkVersion: '>=1.28.0 <2.0.0'
+
+provider:
+  name: aws
+  runtime: go1.x
+  environment:
+    REDIS_HOST: xxxxx
+    REDIS_AUTH: xxxxxx
+    SLACK_WEBHOOK: xxxxx
+    SLACK_VERIFICATION_TOKEN: xxxxx
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ce:*"
+      Resource: "*"
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  accept:
+    handler: bin/accept
+    events:
+      - http:
+          path: accept
+          method: post
+  check:
+    handler: bin/check
+    events:
+      - http:
+          path: check
+          method: get
